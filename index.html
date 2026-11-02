@@ -67,28 +67,24 @@ figcaption span{color:var(--mute);font-size:.95rem}
 </div>
 
 <script>
-/* ---- Edit your videos here. Paste the YouTube ID (the part after v=) into id. ----
+/* ---- Edit your videos here. For an embedded video, paste the YouTube ID (the part after v=) into id.
+        For a button instead of an embed, use link. ----
    1st entry = the big featured video. 2nd and 3rd = the two smaller ones below it. */
 const music = [
   {id:"JZ7w6EQ8QvQ", title:"Featured video", note:""},
   {id:"r4wnIPwp-kU", title:"Video", note:""},
-  {id:"PLAYLIST:PLf-k_L96mtce5zKW5mYKWZnYwRm-IPmZJ", title:"Video playlist", note:""}
+  {link:"https://www.youtube.com/playlist?list=PLf-k_L96mtce5zKW5mYKWZnYwRm-IPmZJ", title:"Video playlist", note:""}
 ];
 
 document.getElementById("music-list").innerHTML = music.map(function(v){
-  var isPlaylist = v.id.startsWith("PLAYLIST:");
-  var listId = isPlaylist ? v.id.slice("PLAYLIST:".length) : "";
-  var embedUrl = isPlaylist
-    ? "https://www.youtube.com/embed?listType=playlist&list=" + listId
-    : "https://www.youtube-nocookie.com/embed/" + v.id;
-  var watchUrl = isPlaylist
-    ? "https://www.youtube.com/playlist?list=" + listId
-    : "https://www.youtube.com/watch?v=" + v.id;
-  var inner = '<iframe src="' + embedUrl + '" title="' + v.title + '" loading="lazy" allowfullscreen></iframe>';
-  return '<figure><div class="frame">' + inner + '</div><figcaption><b>' + v.title +
-    '</b><span>' + v.note + ' <a href="' + watchUrl + '" target="_blank" rel="noopener">Watch on YouTube</a></span></figcaption></figure>';
+  var inner;
+  if (v.link) {
+    inner = '<a class="btn" href="' + v.link + '" target="_blank" rel="noopener">▶ Watch on YouTube</a>';
+  } else {
+    inner = '<iframe src="https://www.youtube-nocookie.com/embed/' + v.id + '" title="' + v.title + '" loading="lazy" allowfullscreen></iframe>';
+  }
+  return '<figure><div class="frame">' + inner + '</div><figcaption><b>' + v.title + '</b><span>' + v.note + '</span></figcaption></figure>';
 }).join("");
-
 </script>
 </body>
 </html>
