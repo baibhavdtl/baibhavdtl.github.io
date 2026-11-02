@@ -76,12 +76,19 @@ const music = [
 ];
 
 document.getElementById("music-list").innerHTML = music.map(function(v){
-  var embedUrl = v.id.startsWith("PLAYLIST:")
-    ? "https://www.youtube-nocookie.com/embed/videoseries?list=" + v.id.slice("PLAYLIST:".length)
+  var isPlaylist = v.id.startsWith("PLAYLIST:");
+  var listId = isPlaylist ? v.id.slice("PLAYLIST:".length) : "";
+  var embedUrl = isPlaylist
+    ? "https://www.youtube.com/embed?listType=playlist&list=" + listId
     : "https://www.youtube-nocookie.com/embed/" + v.id;
+  var watchUrl = isPlaylist
+    ? "https://www.youtube.com/playlist?list=" + listId
+    : "https://www.youtube.com/watch?v=" + v.id;
   var inner = '<iframe src="' + embedUrl + '" title="' + v.title + '" loading="lazy" allowfullscreen></iframe>';
-  return '<figure><div class="frame">' + inner + '</div><figcaption><b>' + v.title + '</b><span>' + v.note + '</span></figcaption></figure>';
+  return '<figure><div class="frame">' + inner + '</div><figcaption><b>' + v.title +
+    '</b><span>' + v.note + ' <a href="' + watchUrl + '" target="_blank" rel="noopener">Watch on YouTube</a></span></figcaption></figure>';
 }).join("");
+
 </script>
 </body>
 </html>
